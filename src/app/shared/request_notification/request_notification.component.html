@@ -1,0 +1,9 @@
+<h3 mat-dialog-title>{{'Permitir notificaciones'}}</h3>
+<div mat-dialog-content>
+  ¿Te gustaría recibir notificaciones de promociones {{name}}?
+</div>
+<div style="margin-top: 20px;" mat-dialog-actions fxLayoutAlign="center center">
+  <button mat-raised-button (click)="no()">{{'No, gracias.'}}</button>
+  <span fxFlex></span>
+  <button mat-raised-button (click)="yes()" class="bnt_color" color="primary">{{'¡Sí deseo!'}}</button>
+</div>

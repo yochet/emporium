@@ -1,0 +1,106 @@
+<mat-tab-group>
+    <mat-tab label="Personal">
+        <div fxLayout="row wrap" fxLayoutAlign="center">
+            <div fxFlex="100" fxFlex.gt-sm="50" >
+                <!--  <h2 class="text-muted text-center">{{'translate.Account_details' | translate}}</h2> -->
+                <form [formGroup]="infoForm">
+                    <mat-form-field class="w-100 mt-2">
+                        <input matInput placeholder="{{'Nombre Completo'}}" formControlName="agent" required>
+                        <mat-error *ngIf="infoForm.controls.agent.errors?.required">{{'Campo Requerido' | translate}}
+                        </mat-error>
+
+                    </mat-form-field>
+                    <mat-form-field class="w-100 mt-1">
+                        <input matInput placeholder="{{'Número de identificación' | translate}}"
+                            formControlName="identificationDocument">
+                        <mat-error *ngIf="infoForm.get('identificationDocument').hasError('required')">
+                            Campo obligatorio.
+                        </mat-error>
+                        <mat-error
+                            *ngIf="infoForm.get('identificationDocument').hasError('pattern') && (infoForm.get('identificationDocument').dirty || infoForm.get('identificationDocument').touched)">
+                            Debe contener 13 dígitos.
+                        </mat-error>
+
+                    </mat-form-field>
+                    <mat-form-field class="w-100 mt-1">
+                        <input matInput placeholder="{{'translate.Email' | translate}}" formControlName="email" required
+                            readonly>
+                        <mat-error *ngIf="infoForm.controls.email.errors?.required">
+                            {{'translate.Email_is_required' | translate}}</mat-error>
+                        <mat-error *ngIf="infoForm.controls.email.hasError('invalidEmail')">
+                            {{'translate.Invalid_email_address' | translate}}</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-100 mt-1">
+
+                        <input matInput placeholder="{{'Teléfono móvil (+504)' | translate}}" formControlName="mobile"
+                            required>
+                        <mat-error *ngIf="infoForm.get('mobile').hasError('required')">
+                            Campo obligatorio.
+                        </mat-error>
+                        <mat-error
+                            *ngIf="infoForm.get('mobile').hasError('pattern') && (infoForm.get('mobile').dirty || infoForm.get('mobile').touched)">
+                            Debe contener 8 dígitos.
+                        </mat-error>
+
+                    </mat-form-field>
+                    <mat-form-field class="w-100 mt-1">
+                        <input matInput placeholder="{{'Teléfono adicional (+504)' | translate}}"
+                            formControlName="phone">
+                        <mat-error
+                            *ngIf="infoForm.get('phone').hasError('pattern') && (infoForm.get('phone').dirty || infoForm.get('phone').touched)">
+                            Debe contener 8 dígitos.
+                        </mat-error>
+                    </mat-form-field>
+
+                    <div class="text-center mt-2">
+                        <button mat-raised-button color="primary"
+                            (click)="onInfoFormSubmit(infoForm.value)">{{'translate.Save' | translate}}</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+    </mat-tab>
+    <mat-tab label="Cambio de Contraseña">
+        <div fxLayout="row wrap" fxLayoutAlign="center">
+            <div fxFlex="100" fxFlex.gt-sm="50" class="p-2" ngClass.sm="mt-2" ngClass.xs="mt-2">
+                <!-- <h2 class="text-muted text-center">{{'translate.Password_change' | translate}}</h2> -->
+                <form [formGroup]="passwordForm">
+                    <mat-form-field class="w-100 mt-2">
+                        <input matInput placeholder="{{'translate.Current_password' | translate}}"
+                            formControlName="currentPassword" type="password" minlength="6" required>
+                        <mat-error *ngIf="passwordForm.controls.currentPassword.errors?.required">
+                            {{'translate.Current_Password_is_required' | translate}}</mat-error>
+                        <mat-error *ngIf="passwordForm.controls.currentPassword.hasError('minlength')">
+                            {{'translate.Current_Password_is_not_long_enough_minimum_of_6_characters' | translate}}
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="w-100 mt-1">
+                        <input matInput placeholder="{{'translate.New_password' | translate}}"
+                            formControlName="newPassword" type="password" minlength="6" required>
+                        <mat-error *ngIf="passwordForm.controls.newPassword.errors?.required">
+                            {{'translate.New_Password_is_required' | translate}}</mat-error>
+                        <mat-error *ngIf="passwordForm.controls.newPassword.hasError('minlength')">
+                            {{'translate.New_Password_is_not_long_enough_minimum_of_6_characters' | translate}}
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="w-100 mt-1">
+                        <input matInput placeholder="{{'translate.Confirm_new_password' | translate}}"
+                            formControlName="confirmNewPassword" type="password" required>
+                        <mat-error *ngIf="passwordForm.controls.confirmNewPassword.errors?.required">
+                            {{'translate.Confirm_New_Password_is_required' | translate}}</mat-error>
+                        <mat-error *ngIf="passwordForm.controls.confirmNewPassword.hasError('mismatchedPasswords')">
+                            {{'translate.Passwords_do_not_match' | translate}}</mat-error>
+                    </mat-form-field>
+                    <div class="text-center mt-2">
+                        <button mat-raised-button color="primary"
+                            (click)="onPasswordFormSubmit(passwordForm.value)">{{'translate.Change' | translate}}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </mat-tab>
+</mat-tab-group>

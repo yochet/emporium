@@ -1,0 +1,291 @@
+<mat-tab-group>
+  <mat-tab label="{{'translate.Billing_address' | translate}}">
+    <div class=" mt-1">
+      <form [formGroup]="billingForm" (submit)="onBillingFormSubmit(billingForm.value)">
+
+        <div fxLayout="row wrap">
+
+
+          <!-- <div fxFlex="100" fxFlex.gt-sm="50" class="px-1">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Departamento</mat-label>
+              <span matSuffix *ngIf="loadDepartment">
+                <mat-progress-spinner [diameter]="20" mode="indeterminate">
+                </mat-progress-spinner>
+              </span>
+              <mat-select formControlName="location_one" (selectionChange)="onChangeDepartment()">
+                <mat-option>
+                  <ngx-mat-select-search [(ngModel)]="searchDepartment" [ngModelOptions]="{standalone: true}"
+                    (ngModelChange)="changueOptionsDepartment($event)" [placeholderLabel]="'Buscar ...'"
+                    [noEntriesFoundLabel]="'No se encontró coincidencias'">
+                  </ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let item of listFilterDepartment" [value]="item.code">
+                  {{item.name}}
+                </mat-option>
+              </mat-select>
+
+              <mat-error *ngIf="billingForm.controls.location_one.errors?.required">
+                Campo Obligatorio.
+              </mat-error>
+
+            </mat-form-field>
+
+          </div> -->
+          <div fxFlex="100" fxFlex.gt-sm="100" class="px-1">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Ciudad</mat-label>
+              <span matSuffix *ngIf="loadCity">
+                <mat-progress-spinner [diameter]="20" mode="indeterminate">
+                </mat-progress-spinner>
+              </span>
+              <mat-select formControlName="location_two" (selectionChange)="onChangeCitys()" required>
+                <mat-option>
+                  <!-- <ngx-mat-select-search [(ngModel)]="searchCity" [ngModelOptions]="{standalone: true}"
+                    (ngModelChange)="changueOptionsCity($event)" placeholder="'Buscar ...'"
+                    noEntriesFoundLabel="'No se encontró coincidencias'">
+                  </ngx-mat-select-search> -->
+                </mat-option>
+                <mat-option *ngFor="let item of listFilterCity" [value]="item.code">
+                  {{item.name}}
+                </mat-option>
+              </mat-select>
+
+              <mat-error *ngIf="billingForm.controls.location_two.errors?.required">
+                Campo obligatorio.
+              </mat-error>
+
+            </mat-form-field>
+          </div>
+
+          <!-- abbreviation-->
+          <!--<div fxFlex="100" fxFlex.gt-sm="50" class="px-1">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Colonia, Residencial o Edificio</mat-label>
+              <span matSuffix *ngIf="loadZone">
+                <mat-progress-spinner [diameter]="20" mode="indeterminate">
+                </mat-progress-spinner>
+              </span>
+              <mat-select [(ngModel)]="searchAbrevzone" (selectionChange)="onChangeAbbreviation()" [ngModelOptions]="{standalone: true}" [disabled]="!billingForm.get('location_two').valid" required>
+                <mat-option>
+                  <ngx-mat-select-search [(ngModel)]="searchZone" [ngModelOptions]="{standalone: true}"
+                    (ngModelChange)="changueOptionsZone($event)" [placeholderLabel]="'Buscar ...'"
+                    [noEntriesFoundLabel]="'No se encontró coincidencias'">
+                  </ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let item of listFilterZone" [value]="item.name">
+                  {{item.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>-->
+
+          <div fxFlex="100" fxFlex.gt-sm="100" class="px-1"> <!-- abbreviation fxFlex="100" fxFlex.gt-sm="50"-->
+
+            <mat-form-field class="w-100 form-field" appearance="outline">
+              <mat-label></mat-label>
+              <a class="link" matSuffix
+                *ngIf="filteredZones.length == 0 && searchZoneCtrl.value != null && searchZoneCtrl.value != '' && (searchInit && enabled_add) "
+                (click)="openConfirmAddZone()" color="primary">
+                Agregar
+              </a>
+
+
+              <input #inputEle matInput placeholder="Colonia, Residencial o Edificio" aria-label="State"
+                [matAutocomplete]="auto" [formControl]="searchZoneCtrl" (keydown.enter)="$event.preventDefault()"
+                [readonly]="!billingForm.get('location_two').valid" oninput="this.value = this.value.toUpperCase()">
+              <!-- abbreviation placeholder vacio y [readonly]="!billingForm.get('location_two').valid || !searchAbrevzone" -->
+              <mat-hint *ngIf="!searchZoneCtrl.value; else templateElse">
+                {{(!billingForm.get('location_two').valid ? 'Primero selecciona una ciudad':"Ingresa la Colonia, 
+                Residencial o Edificio")}}
+              </mat-hint>
+
+              <!--abbreviation-->
+              <!--<mat-hint *ngIf="!searchZoneCtrl.value; else templateElse">
+                {{(!billingForm.get('location_two').valid ? 'Primero selecciona una ciudad' : ( !searchAbrevzone ? "Primero seleccione una abreviación" : "Ingresa la Colonia, Residencial o Edificio"))}}
+              </mat-hint>-->
+              <ng-template #templateElse>
+
+                <mat-hint *ngIf="!zoneObjectSelected || zoneObjectSelected.bp_locationZoneDelete == '1'; else template2">
+
+                </mat-hint> <!-- borrar cuando aparezca las promociones -->
+                <ng-template #template2>
+                  <mat-hint *ngIf="zoneObjectSelected.active == '0'">
+                    <span class="promociones-revision">Zona en revisión</span>
+                  </mat-hint>
+                  <mat-hint *ngIf="zoneObjectSelected.active == '1'">
+                    <span class="promociones-cobertura">Zona dentro de cobertura</span>
+                  </mat-hint>
+                  <mat-hint *ngIf="zoneObjectSelected.active == '2'">
+                    <span class="promociones-no-existe"> En este momento no hay cobertura para tu zona</span>
+                  </mat-hint>
+
+                </ng-template>
+              </ng-template>
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectZone($event)">
+                <mat-option *ngIf="isLoading" class="is-loading">Cargando...</mat-option>
+                <ng-container *ngIf="!isLoading">
+                  <mat-option *ngFor="let movie of filteredZones" [value]="movie">
+                    <span class="sin-obertura" *ngIf="movie.active == '2'">Sin Cobertura</span>
+                    <span class="revision" *ngIf="movie.active == '0'">En Revisión</span>
+                    <span class="cobertura" *ngIf="movie.active == '1'">Con Cobertura</span>
+                    <span>{{movie.name | uppercase }}</span>
+                  </mat-option>
+                </ng-container>
+              </mat-autocomplete>
+
+            </mat-form-field>
+
+
+          </div>
+
+
+
+        </div>
+
+        <!--           <div fxFlex="100" fxFlex.gt-sm="50" class="px-1">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Colonia</mat-label>
+              <span matSuffix *ngIf="loadDistrict">
+                <mat-progress-spinner [diameter]="20" mode="indeterminate">
+                </mat-progress-spinner>
+              </span>
+              <mat-select formControlName="location_three">
+                <mat-option>
+                  <ngx-mat-select-search [(ngModel)]="searchDistrict" [ngModelOptions]="{standalone: true}"
+                    (ngModelChange)="changueOptionsDistrict($event)" [placeholderLabel]="'Buscar ...'"
+                    [noEntriesFoundLabel]="'No se encontró coincidencias'">
+                  </ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let item of listFilterDistrict" [value]="item.code">
+                  {{item.name}}
+                </mat-option>
+              </mat-select>
+
+            </mat-form-field>
+          </div> -->
+
+        <div fxLayout="row">
+
+          <div fxFlex="100" class="px-1">
+
+            <div fxLayout="row" fxLayout.xs="column" [fxLayoutAlign]="'space-between start'" class="text-muted">
+              <mat-form-field appearance="outline" class="w-100">
+
+                <mat-label>Dirección de Envío</mat-label>
+                <input matInput placeholder="Calle, Número Casa, Apartamento u Oficina." type="text" required
+                  formControlName="address" (keydown.enter)="$event.preventDefault()" required>
+                <mat-hint>Calle, Número Casa, Apartamento u Oficina.</mat-hint>
+                <mat-error *ngIf="billingForm.get('address').hasError('required')">
+                  Campo obligatorio.
+                </mat-error>
+                <mat-error *ngIf="billingForm.get('address').hasError('maxlength')">
+                  Máximo 250 caracteres
+                </mat-error>  
+              </mat-form-field>
+              <!-- <div>
+                <button mat-button
+                  color="{{(this.billingForm.value.latitude == null || this.billingForm.value.latitude == '0.0') ? 'warn' :'primary'}}"
+                  (click)="openMap()" #tooltip="matTooltip"
+                  matTooltip="{{(this.billingForm.value.latitude == null || this.billingForm.value.latitude == '0.0') ? 'Por favor, defina una longitud y latitud' :'Cambiar Latitud y Longitud'}}"
+                  matTooltipPosition="right" matTooltipClass="allow-cr">
+
+                  <div fxLayout="column" fxLayoutAlign="center center">
+                    <mat-icon style="font-size:34px">room</mat-icon>
+                    <span>{{(this.billingForm.value.latitude == null || this.billingForm.value.latitude == '0.0') ? 'Definir ubicación' :'Editar ubicación'}}</span>
+                  </div>
+                </button>
+              </div> -->
+            </div>
+          </div>
+        </div>
+
+        <div fxLayout="row wrap">
+          <div fxFlex="100" class="px-1">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Punto de Referencia</mat-label>
+
+              <input matInput placeholder="Punto de referencia" type="text" formControlName="reference" (keydown.enter)="$event.preventDefault()" required>
+              <!-- <span matSuffix><i class="material-icons">home_work</i></span> -->
+              <mat-hint>Ej. Frente a la iglesia, casa porton azul...</mat-hint>
+              <mat-error *ngIf="billingForm.get('reference').hasError('required')">
+                Campo obligatorio.
+              </mat-error>
+              <mat-error *ngIf="billingForm.get('reference').hasError('maxlength')">
+                Máximo 250 caracteres
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div fxLayout="row wrap">
+          <div fxFlex="100" class="text-center mt-2">
+            <button type="submit" [disabled]="zonevalidate" mat-raised-button color="primary">{{'translate.Save' | translate}}</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </mat-tab>
+  <mat-tab label="{{'translate.Shipping_address' | translate}}"
+    [disabled]="billingForm.get('location_two').invalid ||  billingForm.get('address').invalid  ">
+    <div class="mt-1">
+
+      <div fxLayout="row wrap">
+        <div fxFlex="100" class="p-1">
+
+          <span class="d-block ">
+            <div fxLayout="row" fxLayoutAlign="space-between center" class="text-muted">
+              <b><span fxFlex></span></b>
+              <b>
+                <a class="text-muted" (click)="openNewAddress(null)" mat-button matTooltip="Nueva Dirección">
+                  <mat-icon>add</mat-icon> Nuevo
+                </a>
+              </b>
+            </div>
+            <div class="divider"></div>
+            <div *ngIf="listAddress.length == 0" class="py-1 text-muted text-center">
+              No hay regitros para mostrar</div>
+            <mat-list>
+              <mat-list-item *ngFor="let addres of listAddress">
+                <div matLine>
+                  <b>{{addres.name}}</b> - <span *ngIf="!addres.locationZoneActive ||  addres?.locationZoneDelete == '1'; else template3">Zona sin
+                    definir</span>
+                  <ng-template #template3>
+                    <span *ngIf="addres.locationZoneActive == '0'">
+                      <span class="promociones-revision">Zona en revisión</span></span>
+                    <span *ngIf="addres.locationZoneActive == '1'">
+                      <span class="promociones-cobertura">Zona dentro de cobertura</span>
+                    </span>
+                    <span *ngIf="addres.locationZoneActive == '2'">
+                      <span class="promociones-no-existe">Zona sin cobertura</span>
+                    </span>
+                  </ng-template>
+                </div>
+
+                <p matLine class="text-muted">
+                  <bdi>{{addres.address}} </bdi>
+                </p>
+
+                <button mat-icon-button color="primary" [matMenuTriggerFor]="menuRef">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+
+                <mat-menu #menuRef="matMenu">
+
+                  <button mat-menu-item (click)="openNewAddress(addres)">
+                    <mat-icon color="primary" class="mat-18">edit</mat-icon> Editar Dirección
+                  </button>
+                  <button mat-menu-item (click)="openDeleteAddress(addres)">
+                    <mat-icon color="warn" class="mat-18">delete</mat-icon> Eliminar Dirección
+                  </button>
+                </mat-menu>
+              </mat-list-item>
+            </mat-list>
+          </span>
+        </div>
+      </div>
+
+
+
+    </div>
+  </mat-tab>
+</mat-tab-group>

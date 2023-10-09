@@ -1,0 +1,62 @@
+<p class="text-muted">{{'translate.Hello' | translate}}, <b>Emilio Verdines</b>
+  {{'translate.account_message' | translate}}.</p>
+
+<div fxLayout="row wrap" class="flex-wrapper">
+  <div fxFlex="33.3" fxFlex.sm="50" fxFlex.xs="100" class="col">
+    <mat-card class="p-0">
+      <mat-card-header class="p-1 account-card-title" fxLayoutAlign="space-between center">
+        <mat-card-title class="m-0">
+          <h3>{{'translate.Account_Information' | translate}}</h3>
+        </mat-card-title>
+        <a mat-icon-button routerLink="/cuenta/informacion">
+          <mat-icon class="text-muted">edit</mat-icon>
+        </a>
+      </mat-card-header>
+      <div class="divider"></div>
+      <mat-card-content class="p-2 text-muted account-card-content">
+        <p>{{_user?.bp_agent}}</p>
+        <p>{{_user?.email}}</p>
+        <p><a routerLink="/cuenta/informacion" class="primary-text">{{'translate.Change_password' | translate}}</a></p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxFlex="33.3" fxFlex.sm="50" fxFlex.xs="100" class="col">
+    <mat-card class="p-0">
+      <mat-card-header class="p-1 account-card-title" fxLayoutAlign="space-between center">
+        <mat-card-title class="m-0">
+          <h3>{{'translate.Addresses' | translate}}</h3>
+        </mat-card-title>
+        <a mat-icon-button routerLink="/cuenta/direcciones">
+          <mat-icon class="text-muted">edit</mat-icon>
+        </a>
+      </mat-card-header>
+      <div class="divider"></div>
+      <mat-card-content class="p-2 text-muted account-card-content">
+        <p>{{'translate.Billing_address' | translate}}</p>
+        <p>{{'translate.Shipping_address' | translate}}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxFlex="33.3" fxFlex.sm="100" fxFlex.xs="100" class="col">
+    <mat-card class="p-0">
+      <mat-card-header class="p-1 account-card-title" fxLayoutAlign="space-between center">
+        <mat-card-title class="m-0">
+          <h3>{{'translate.Orders' | translate}}</h3>
+        </mat-card-title>
+        <a mat-icon-button routerLink="/cuenta/pedidos">
+          <mat-icon class="text-muted">edit</mat-icon>
+        </a>
+      </mat-card-header>
+      <div class="divider"></div>
+      <mat-card-content class="p-2 text-muted account-card-content">
+        <p class="">{{'translate.Completed' | translate}}</p>
+        <mat-progress-bar value="75" color="primary"></mat-progress-bar>
+        <p class="mt-1">{{'translate.Processing' | translate}}</p>
+        <mat-progress-bar value="25" color="accent"></mat-progress-bar>
+        <p class="mt-1">{{'translate.On_hold' | translate}}</p>
+        <mat-progress-bar value="65" color="warn"></mat-progress-bar>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
